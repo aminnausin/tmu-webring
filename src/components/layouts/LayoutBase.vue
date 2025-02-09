@@ -1,11 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Navbar from '@/components/layouts/NavBar.vue';
+</script>
 
 <template>
-    <div class="h-screen">
-        <main
-            class="grid grid-cols-1 lg:grid-cols-10 2xl:grid-cols-6 sm:p-6 gap-6 snap-y bg-primary-900 dark:bg-primary-dark-900 sm:bg-primary-950 sm:dark:bg-primary-dark-950 dark:text-[#e2e0e2] font-sans text-gray-900 antialiased overflow-x-clip"
+    <main class="relative gap-4 flex flex-col items-center h-screen overflow-y-scroll w-full p-6 md:py-12 md:px-24 dark:text-[#e2e0e2] text-gray-900 lowercase font-sans">
+        <Navbar />
+        <slot name="content"></slot>
+        <a
+            href="https://github.com/aminnausin/tmu-webring"
+            class="absolute bottom-4 md:px-4 p-1 text-sm md:text-base bg-neutral-950/50 rounded-full text-neutral-200 hover:text-purple-600 hover:bg-white"
         >
-            <slot name="content"></slot>
-        </main>
-    </div>
+            add your site {{ 'here' }}
+        </a>
+    </main>
 </template>
