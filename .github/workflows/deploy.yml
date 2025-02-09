@@ -24,13 +24,11 @@ jobs:
                   npm ci
                   npm run build
 
-            - name: Debug - List files in dist directory
-              run: ls -R ./dist
-
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
                   path: './dist'
+                  name: 'github-pages'
 
     deploy:
         name: Deploy Application
