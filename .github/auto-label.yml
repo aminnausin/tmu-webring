@@ -1,0 +1,8 @@
+add-website:
+    - changed-files:
+          - any-glob-to-any-file: 'src/resources/sites.ts'
+
+documentation:
+    - changed-files:
+          - any-glob-to-any-file:
+                - 'README.md'
