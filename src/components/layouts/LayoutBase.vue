@@ -3,7 +3,7 @@ import Navbar from '@/components/layouts/NavBar.vue';
 </script>
 
 <template>
-    <main class="relative gap-4 flex flex-col items-center h-screen overflow-y-scroll w-full p-6 md:py-12 md:px-24 dark:text-[#e2e0e2] text-gray-900 lowercase font-sans">
+    <main class="relative gap-4 flex flex-col items-center h-screen overflow-y-scroll w-full p-6 md:py-12 md:px-24 dark:text-[#e2e0e2] text-gray-900 lowercase font-dm-sans">
         <Navbar />
         <slot name="content"></slot>
         <a

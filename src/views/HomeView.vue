@@ -34,7 +34,7 @@ onMounted(() => {
 <template>
     <LayoutBase>
         <template #content>
-            <section class="w-full flex flex-col items-center">
+            <section class="w-full flex flex-col items-center mt-32">
                 <div :class="`transition-all duration-700 text ${init ? 'w-full' : 'w-1/5'} border-b flex items-center gap-2 text-lg overflow-clip`">
                     <ProiconsSearch class="w-4 h-4 shrink-0" />
                     <input class="w-full focus:outline-hidden text-ellipsis flex-1" v-model="query" placeholder="Search by name, year, website or skill" />

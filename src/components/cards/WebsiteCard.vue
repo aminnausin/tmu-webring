@@ -10,7 +10,7 @@ const props = withDefaults(
         site: () => ({
             name: 'Fareen',
             year: '2020',
-            link: 'https://fareenkhan.vercel.app/',
+            link: new URL('https://fareenkhan.vercel.app/'),
             skills: ['java', 'swift'],
         }),
     },
@@ -18,9 +18,9 @@ const props = withDefaults(
 </script>
 
 <template>
-    <a :href="site.link" class="hover:bg-neutral-950/50 text-neutral-300 hover:text-purple-500 rounded-2xl md:rounded-full">
+    <a :href="site.link.toString()" class="hover:bg-neutral-950/50 text-neutral-300 hover:text-purple-500 rounded-2xl md:rounded-full">
         <h2 class="md:px-4 p-1 text-sm md:text-base break-all md:line-clamp-1">
-            {{ site.link.trim().replace('https://', '').replace('http://', '').replace(/\/$/, '') }}
+            {{ site.link.toString().trim().replace('https://', '').replace('http://', '').replace(/\/$/, '') }}
         </h2>
     </a>
 </template>

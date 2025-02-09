@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, useTemplateRef, watch } from 'vue';
-import { Network, type Edge, type Node } from 'vis-network';
+import { Network, type Edge, type Node, type Options } from 'vis-network';
 
 import LayoutBase from '@/components/layouts/LayoutBase.vue';
 import sites from '@/resources/sites';
@@ -8,26 +8,28 @@ import ProiconsArrowRight from '@/components/icons/ProiconsArrowRight.vue';
 
 const legendOpen = ref(true);
 
+const studentLinks = ref<Record<number, URL>>({});
 const indexedSites = sites.map((site, index) => {
     return { id: index, ...site };
 });
 
 const skillSet = ref<Set<string>>(new Set());
-const skillColors = ref<Record<string, string>>({
-    java: '#42b883',
-    swift: '#f7df1e',
-    'c#': '#ff5733',
-    blazor: '#007acc',
-    php: '#007acc',
-    vue: 'rgb(66, 184, 131)',
-    'next.js': '#007acc',
-    react: '#007acc',
+const skillColors = ref<Record<string, { bg: string; text?: string }>>({
+    java: { bg: '#e11e22', text: '#ffffff' },
+    swift: { bg: '#ff6e01', text: '#ffffff' },
+    'c#': { bg: '#390091', text: '#ffffff' },
+    php: { bg: '#787cb4' },
+    laravel: { bg: '#ff291a' },
+    vue: { bg: '#3fb984' },
 });
 
 const graph = useTemplateRef('graph');
 
 const getRandomColor = () => {
-    return `hsl(${Math.random() * 360}, 70%, 60%)`; // Generates bright colors
+    const hue = Math.random() * 360;
+    const bg = `hsl(${hue}, 70%, 60%)`;
+
+    return { bg, text: '#0B1215' };
 };
 
 const generateGraph = () => {
@@ -38,6 +40,7 @@ const generateGraph = () => {
     const skillCounter: Record<string, number> = {};
 
     skillSet.value = new Set<string>();
+    studentLinks.value = {};
 
     indexedSites.forEach((student) => {
         nodes.push({
@@ -45,13 +48,20 @@ const generateGraph = () => {
             label: student.name,
             shape: 'hexagon',
             size: 12,
-
+            borderWidthSelected: 2,
             color: {
-                background: `#ff5733`,
-                border: '#444444',
+                background: `#14549d`,
+                border: '#14549d',
+                highlight: {
+                    background: '#fcdd04',
+                    border: '#14549d',
+                },
             },
-            font: { color: '#ffffff', size: 16 }, // Move label below
+            font: { color: '#ffffff', size: 10, face: 'DM Sans' },
+            title: student.link.toString(),
         });
+
+        studentLinks.value[student.id] = student.link;
 
         student.skills?.forEach((skill) => {
             if (!skillSet.value.has(skill)) {
@@ -61,7 +71,14 @@ const generateGraph = () => {
 
                 const color = skillColors.value[skill];
 
-                nodes.push({ id: skill, label: skill, shape: 'circle', color: color, font: { size: 16, face: 'dm-sans' } });
+                nodes.push({
+                    id: skill,
+                    label: skill,
+                    shape: 'circle',
+                    color: color.bg,
+                    font: { size: 16, face: 'DM Sans', color: color.text ?? '#0B1215' },
+                    labelHighlightBold: false,
+                });
             }
 
             edges.push({ from: student.id, to: skill });
@@ -75,17 +92,20 @@ const generateGraph = () => {
         if (node.shape === 'circle') {
             const skill = node.id as string;
             const count = skillCounter[skill] || 0;
-            // console.log(node);
 
-            node.font = { size: 10 + count * 5 };
+            const currentFont = (node.font as object) ?? {};
+            node.font = { ...currentFont, size: 10 + count * 5 };
         }
     });
 
     const data = { nodes, edges };
 
-    const options = {
+    const options: Options = {
         edges: {
-            color: '#8620a6',
+            color: {
+                highlight: '#fcdd04fa',
+                color: '#14549d',
+            },
             width: 1,
             arrows: 'to',
         },
@@ -93,7 +113,14 @@ const generateGraph = () => {
         physics: { stabilization: false },
     };
 
-    new Network(graph.value, data, options);
+    const network = new Network(graph.value, data, options);
+
+    network.on('click', (params) => {
+        const nodeId = params.nodes[0];
+        if (nodeId !== undefined && !isNaN(parseInt(nodeId)) && studentLinks.value[nodeId]) {
+            window.open(studentLinks.value[nodeId], '_blank');
+        }
+    });
 };
 
 watch(() => graph.value, generateGraph);
@@ -105,7 +132,7 @@ watch(() => graph.value, generateGraph);
             <section class="w-full flex flex-col items-center my-auto md:px-16">
                 <!-- Graph options -->
             </section>
-            <section class="relative ring-2 ring-neutral-700/10 rounded-2xl">
+            <section class="relative ring-2 ring-neutral-700/10 rounded-2xl w-full">
                 <div ref="graph" class="h-[80vh] w-full">
                     <!-- Vis Network Graph -->
                     The graph did not work...
@@ -123,7 +150,7 @@ watch(() => graph.value, generateGraph);
                             <ProiconsArrowRight :class="`w-5 h-5 shrink-0 hover:h-6 hover:w-6 ${legendOpen ? 'rotate-[135deg]' : '-rotate-45'}`" />
                         </button>
                         <div v-for="(skill, index) in skillSet" :key="index" class="flex items-center gap-2">
-                            <div class="h-3 w-3 rounded-full" :style="`background-color: ${skillColors[skill]}`"></div>
+                            <div class="h-3 w-3 rounded-full" :style="`background-color: ${skillColors[skill].bg}`"></div>
                             <span class="capitalize">{{ skill }}</span>
                         </div>
                     </div>
