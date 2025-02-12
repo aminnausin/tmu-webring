@@ -7,7 +7,7 @@ import Navbar from '@/components/layouts/NavBar.vue';
         <Navbar />
         <slot name="content"></slot>
         <a
-            href="https://github.com/aminnausin/tmu-webring/pulls"
+            href="https://github.com/aminnausin/tmu-webring/fork"
             class="absolute bottom-4 md:px-4 p-1 text-sm md:text-base bg-neutral-950/50 rounded-full text-neutral-200 hover:text-purple-600 hover:bg-white"
         >
             add your site {{ 'here' }}
