@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url';
-
 import { defineConfig } from 'vite';
 
 import viteCompression from 'vite-plugin-compression';
@@ -15,5 +14,5 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
-    base: '/tmu-webring/',
+    base: '/tmu-webring',
 });
