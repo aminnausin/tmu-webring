@@ -14,10 +14,10 @@ const sites: Website[] = [
         skills: ['python', 'power bi'],
     },
     {
-        name: 'Muyeed Asshole',
+        name: 'Muyeed Hossain',
         year: '2025',
         link: new URL('https://muyeed10.github.io/Portfolio/'),
-        skills: ['js', 'smalltalk'],
+        skills: ['javascript', 'python'],
     },
 ];
 export default sites;
