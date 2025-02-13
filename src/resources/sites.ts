@@ -3,7 +3,7 @@ import type { Website } from '@/types/types';
 const sites: Website[] = [
     {
         name: 'Fareen Khan',
-        year: '2020',
+        year: '2025',
         link: new URL('https://fareenkhan.vercel.app/'),
         skills: ['java', 'swift'],
     },
@@ -11,7 +11,7 @@ const sites: Website[] = [
         name: 'Zakir Dawood',
         year: '2025',
         link: new URL('https://zakirdawood.herokuapp.com/'),
-        skills: ['python', 'power bi'],
+        skills: ['python', 'powerbi'],
     },
     {
         name: 'Muyeed Hossain',
@@ -25,11 +25,17 @@ const sites: Website[] = [
         link: new URL('https://eldoss.me/'),
         skills: ['python', 'javascript'],
     },
-        {
+    {
         name: 'Shams Kadri',
         year: '2025',
         link: new URL('https://shamskadri.com/'),
         skills: ['python', 'sql'],
+    },
+    {
+        name: 'Muhammad Mehdi Ali',
+        year: '2025',
+        link: new URL('https://muhammad-m.vercel.app/'),
+        skills: ['javascript', 'dart'],
     },
 ];
 export default sites;
