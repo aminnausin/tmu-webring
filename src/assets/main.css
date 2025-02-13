@@ -8,3 +8,5 @@ a {
 @theme {
     --font-dm-sans: DM-Sans, sans-serif;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
