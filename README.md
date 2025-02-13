@@ -20,7 +20,7 @@ To add your site, you MUST be a current student or alumni at [Toronto Metropolit
 2. Add your details in `src/resources/sites.ts` to the end of the `sites` array. The 4 values are:
 
    - Full Name
-   - Year Admitted to Carleton
+   - Year Admitted to Toronto Metropolitan University
    - Website URL (must be **your** personal website)
    - Top 2 Skills (**Optional**, this is for adding your website to the graph and just for fun! Add two of your top skills in the array such as programming languages or frameworks)
    - Top 2 Employers (**Optional**, this is for adding your website to the graph and just for fun! Add two of your top co-op employers in the array)
