@@ -27,10 +27,7 @@ const sitesFiltered = computed(() => {
 
 const generateRandomLink = () => {
     if (!sitesFiltered.value || sitesFiltered.value.length === 0) randomLink.value = '';
-
-    const index = Math.floor(Math.random() * sitesFiltered.value.length);
-
-    randomLink.value = sitesFiltered.value[index].link.toString() ?? '';
+    randomLink.value = sitesFiltered.value[Math.floor(Math.random() * sitesFiltered.value.length)].link.toString() ?? '';
 };
 
 onMounted(() => {
