@@ -3,6 +3,6 @@ export interface Website {
     name: string;
     year: string;
     link: URL;
-    skills?: string[];
+    skills?: [string, string];
     employers?: [string, string];
 }
