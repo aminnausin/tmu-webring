@@ -19,5 +19,17 @@ const sites: Website[] = [
         link: new URL('https://muyeed10.github.io/Portfolio/'),
         skills: ['javascript', 'python'],
     },
+    {
+        name: 'Eldoss Jogy',
+        year: '2026',
+        link: new URL('https://eldoss.me/'),
+        skills: ['python', 'javascript'],
+    },
+        {
+        name: 'Shams Kadri',
+        year: '2025',
+        link: new URL('https://shamskadri.com/'),
+        skills: ['python', 'sql'],
+    },
 ];
 export default sites;
