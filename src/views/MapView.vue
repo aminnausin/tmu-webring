@@ -21,6 +21,11 @@ const skillColors = ref<Record<string, { bg: string; text?: string }>>({
     php: { bg: '#787cb4' },
     laravel: { bg: '#ff291a' },
     vue: { bg: '#3fb984' },
+    python: { bg: '#3b74a3', text: '#ffffff' },
+    javascript: { bg: '#f0dc55' },
+    typescript: { bg: '#377cc8' },
+    powerbi: { bg: '#feca22' },
+    dart: { bg: '#33b9f6', text: '#ffffff' },
 });
 
 const graph = useTemplateRef('graph');
@@ -58,12 +63,13 @@ const generateGraph = () => {
                 },
             },
             font: { color: '#ffffff', size: 10, face: 'DM Sans' },
-            title: student.link.toString(),
+            title: student.link.toString(), // This doesn't seem to work
         });
 
         studentLinks.value[student.id] = student.link;
 
         student.skills?.forEach((skill) => {
+            // This can be made better with less branching and more readable code
             if (!skillSet.value.has(skill)) {
                 if (!skillColors.value[skill]) {
                     skillColors.value[skill] = getRandomColor();
@@ -76,9 +82,18 @@ const generateGraph = () => {
                     label: skill,
                     shape: 'circle',
                     color: color.bg,
-                    font: { size: 16, face: 'DM Sans', color: color.text ?? '#0B1215' },
+                    font: { size: 12, face: 'DM Sans', color: color.text ?? '#0B1215' },
                     labelHighlightBold: false,
                 });
+            } else {
+                const skillNode = nodes.find((node) => node.id === skill);
+
+                if (skillNode) {
+                    const count = skillCounter[skill] || 0;
+
+                    const currentFont = (skillNode.font as object) ?? {};
+                    skillNode.font = { ...currentFont, size: 12 + count * 4 };
+                }
             }
 
             edges.push({ from: student.id, to: skill });
@@ -86,16 +101,6 @@ const generateGraph = () => {
             skillCounter[skill] = (skillCounter[skill] || 0) + 1;
             skillSet.value.add(skill);
         });
-    });
-
-    nodes.forEach((node) => {
-        if (node.shape === 'circle') {
-            const skill = node.id as string;
-            const count = skillCounter[skill] || 0;
-
-            const currentFont = (node.font as object) ?? {};
-            node.font = { ...currentFont, size: 10 + count * 5 };
-        }
     });
 
     const data = { nodes, edges };
@@ -132,29 +137,28 @@ watch(() => graph.value, generateGraph);
             <section class="w-full flex flex-col items-center my-auto md:px-16">
                 <!-- Graph options -->
             </section>
-            <section class="relative ring-2 ring-neutral-700/10 rounded-2xl w-full">
+            <section class="relative border-2 border-neutral-600/30 rounded-2xl w-full overflow-clip">
                 <div ref="graph" class="h-[80vh] w-full">
                     <!-- Vis Network Graph -->
                     The graph did not work...
                 </div>
-                <span
-                    :class="`group overflow-hidden absolute bottom-0 left-0 rounded-tr-lg border-b-0 border-l-0 border border-neutral-600/70 origin-bottom-left bg-neutral-900/80 text-sm backdrop-blur-xl`"
-                >
-                    <div
-                        :class="`relative grid grid-cols-3 gap-2 px-4 py-2 scrollbar-minimal overflow-clip transition-all duration-500 ${legendOpen ? 'w-full sm:w-[300px] pe-[64px] max-h-[10vh]' : 'w-[30px] h-[30px]'}`"
+                <div :class="`group absolute bottom-0 left-0 text-sm w-full sm:w-[320px]`">
+                    <span
+                        :class="`relative grid xs:grid-cols-3 gap-2 sm:rounded-tr-lg border-t sm:border-r border-neutral-600/70 backdrop-blur-xl scrollbar-minimal scrollbar-hidden overflow-clip transition-all duration-500 ${legendOpen ? 'px-4 py-2 w-full pe-12 h-[10vh] overflow-y-auto' : 'w-8 h-8 rounded-tr-lg border-r'}`"
                     >
                         <button
                             @click="legendOpen = !legendOpen"
-                            :class="`${legendOpen ? 'opacity-0 group-hover:opacity-100' : ''} rounded-bl-lg flex absolute top-0 right-0 h-[30px] w-[30px] cursor-pointer rounded-tr-lg bg-primary-500 text-white transition-opacity justify-center items-center bg-purple-600`"
+                            :class="`${legendOpen ? 'opacity-0 group-hover:opacity-100' : ''} absolute top-0 right-0 rounded-bl-lg flex h-8 w-8 cursor-pointer bg-primary-500 text-white transition-opacity justify-center items-center bg-purple-600`"
+                            title="Open or close legend"
                         >
                             <ProiconsArrowRight :class="`w-5 h-5 shrink-0 hover:h-6 hover:w-6 ${legendOpen ? 'rotate-[135deg]' : '-rotate-45'}`" />
                         </button>
-                        <div v-for="(skill, index) in skillSet" :key="index" class="flex items-center gap-2">
+                        <div v-for="(skill, index) in skillSet" :key="index" :class="`flex items-center gap-2`">
                             <div class="h-3 w-3 rounded-full" :style="`background-color: ${skillColors[skill].bg}`"></div>
-                            <span class="capitalize">{{ skill }}</span>
+                            <span class="capitalize truncate" :title="skill">{{ legendOpen ? skill : '' }}</span>
                         </div>
-                    </div>
-                </span>
+                    </span>
+                </div>
             </section>
         </template>
     </LayoutBase>

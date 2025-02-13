@@ -24,6 +24,14 @@ const sitesFiltered = computed(() => {
     });
 });
 
+const randomLink = computed(() => {
+    if (!sitesFiltered.value || sitesFiltered.value.length === 0) return '';
+
+    const index = Math.floor(Math.random() * sitesFiltered.value.length);
+
+    return sitesFiltered.value[index];
+});
+
 onMounted(() => {
     setTimeout(() => {
         init.value = true;
@@ -34,13 +42,24 @@ onMounted(() => {
 <template>
     <LayoutBase>
         <template #content>
-            <section class="w-full flex flex-col items-center mt-32">
-                <div :class="`transition-all duration-700 text ${init ? 'w-full' : 'w-1/5'} border-b flex items-center gap-2 text-lg overflow-clip`">
+            <section class="w-full flex items-center mt-32 flex-col sm:flex-row gap-4">
+                <div :class="`transition-all duration-700 text ${init ? 'w-full' : 'w-1/5'} border-b flex items-center gap-2 overflow-clip flex-1`">
                     <ProiconsSearch class="w-4 h-4 shrink-0" />
-                    <input class="w-full focus:outline-hidden text-ellipsis flex-1" v-model="query" placeholder="Search by name, year, website or skill" />
+                    <input
+                        class="w-full focus:outline-hidden text-ellipsis flex-1 lowercase"
+                        v-model="query"
+                        title="Search for a website"
+                        placeholder="Search by name, year, website or skill"
+                    />
                 </div>
+                <a
+                    class="bg-purple-600/50 hover:bg-purple-600 px-4 lowercase rounded-xl line-clamp-1"
+                    :href="randomLink.link.toString()"
+                    title="Open a random website from the list below"
+                    >{{ randomLink ? 'Lucky Me' : 'Unlucky' }}</a
+                >
             </section>
-            <section class="flex gap-8 flex-wrap py-8 justify-center">
+            <section class="flex gap-y-2 gap-8 flex-wrap sm:py-8 justify-center">
                 <WebsiteCard v-for="(site, index) in sitesFiltered" :key="index" :site="site" />
             </section>
         </template>

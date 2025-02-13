@@ -5,7 +5,7 @@ const sites: Website[] = [
         name: 'Fareen Khan',
         year: '2025',
         link: new URL('https://fareenkhan.vercel.app/'),
-        skills: ['java', 'swift'],
+        skills: ['java', 'swift', 'C'],
     },
     {
         name: 'Zakir Dawood',
@@ -29,13 +29,13 @@ const sites: Website[] = [
         name: 'Shams Kadri',
         year: '2025',
         link: new URL('https://shamskadri.com/'),
-        skills: ['python', 'sql'],
+        skills: ['python', 'sql', 'c'],
     },
     {
         name: 'Muhammad Mehdi Ali',
         year: '2025',
         link: new URL('https://muhammad-m.vercel.app/'),
-        skills: ['javascript', 'dart'],
+        skills: ['javascript', 'python', 'dart', 'c'],
     },
 ];
 export default sites;
