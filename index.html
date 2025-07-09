@@ -1,14 +1,48 @@
 <!doctype html>
-<html lang="en-ca">
+<html lang="en-ca" class="dark:[color-scheme:dark]">
     <head>
         <meta charset="UTF-8" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>TMU Webring</title>
+        <script>
+            function setVhUnit() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+
+            setVhUnit();
+            window.addEventListener('resize', setVhUnit);
+        </script>
+        <style>
+            #nprogress .bar {
+                background: #9333ea !important;
+            }
+
+            #nprogress-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 10000;
+                pointer-events: none;
+            }
+
+            .h-dynamic-screen {
+                height: calc(var(--vh, 1vh) * 100);
+            }
+        </style>
     </head>
 
-    <body class="dark bg-[#181818]">
-        <div id="app" class=""></div>
+    <body
+        class="h-dynamic-screen overflow-y-auto flex flex-col bg-primary-900 dark:bg-[#181818] dark:text-[#e2e0e2] lowercase text-sm text-gray-900 antialiased scrollbar-minimal scrollbar-track:bg-neutral-300 scrollbar-track:dark:bg-neutral-800 font-quicksand"
+        id="root"
+    >
+        <!-- dark:bg-[#121216] dark:text-[#e2e0e2] text-gray-900 -->
+
+        <div id="app" class="contents"></div>
+        <div id="nprogress-container" class="h-2"></div>
+
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

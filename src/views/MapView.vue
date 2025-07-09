@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, useTemplateRef, watch } from 'vue';
-import { Network, type Edge, type Node, type Options } from 'vis-network';
+import type { Edge, Node, Options } from 'vis-network';
 
+import { ref, useTemplateRef, watch } from 'vue';
+import { Network } from 'vis-network';
+
+import ProiconsArrowRight from '@/components/icons/ProiconsArrowRight.vue';
 import LayoutBase from '@/components/layouts/LayoutBase.vue';
 import sites from '@/resources/sites';
-import ProiconsArrowRight from '@/components/icons/ProiconsArrowRight.vue';
 
 const legendOpen = ref(true);
 
@@ -133,33 +135,36 @@ watch(() => graph.value, generateGraph);
 
 <template>
     <LayoutBase>
-        <template #content>
-            <section class="w-full flex flex-col items-center my-auto md:px-16">
-                <!-- Graph options -->
-            </section>
-            <section class="relative border-2 border-neutral-600/30 rounded-2xl w-full overflow-clip">
-                <div ref="graph" class="h-[80vh] w-full">
-                    <!-- Vis Network Graph -->
-                    The graph did not work...
-                </div>
-                <div :class="`group absolute bottom-0 left-0 text-sm w-full sm:w-[320px]`">
-                    <span
-                        :class="`relative grid xs:grid-cols-3 gap-2 sm:rounded-tr-lg border-t sm:border-r border-neutral-600/70 backdrop-blur-xl scrollbar-minimal scrollbar-hidden overflow-clip transition-all duration-500 ${legendOpen ? 'px-4 py-2 w-full pe-12 h-[10vh] overflow-y-auto' : 'w-8 h-8 rounded-tr-lg border-r'}`"
+        <section class="relative border-2 border-neutral-600/30 rounded-2xl w-full overflow-clip flex flex-1">
+            <div ref="graph" class="w-full sm:flex-1">
+                <!-- Vis Network Graph -->
+                The graph did not work...
+            </div>
+            <div :class="`group absolute bottom-0 left-0 text-sm w-full sm:w-[320px]`">
+                <span
+                    :class="[
+                        `relative grid xs:grid-cols-3 gap-2 sm:rounded-tr-lg border-t sm:border-r border-neutral-600/70 backdrop-blur-xl scrollbar-minimal overflow-clip transition-all duration-500`,
+                        { 'px-4 py-2 w-full sm:pe-12 h-[14vh] sm:h-[10vh] overflow-y-auto': legendOpen, 'w-8 h-8 rounded-tr-lg border-r': !legendOpen },
+                    ]"
+                >
+                    <button
+                        @click="legendOpen = !legendOpen"
+                        :class="[
+                            {
+                                'opacity-0 group-hover:opacity-100': legendOpen,
+                            },
+                            `absolute top-0 right-0 rounded-bl-lg flex h-8 w-8 cursor-pointer bg-primary-500 text-white transition-opacity justify-center items-center bg-purple-600`,
+                        ]"
+                        title="Open or close legend"
                     >
-                        <button
-                            @click="legendOpen = !legendOpen"
-                            :class="`${legendOpen ? 'opacity-0 group-hover:opacity-100' : ''} absolute top-0 right-0 rounded-bl-lg flex h-8 w-8 cursor-pointer bg-primary-500 text-white transition-opacity justify-center items-center bg-purple-600`"
-                            title="Open or close legend"
-                        >
-                            <ProiconsArrowRight :class="`w-5 h-5 shrink-0 hover:h-6 hover:w-6 ${legendOpen ? 'rotate-[135deg]' : '-rotate-45'}`" />
-                        </button>
-                        <div v-for="(skill, index) in skillSet" :key="index" :class="`flex items-center gap-2`">
-                            <div class="h-3 w-3 rounded-full" :style="`background-color: ${skillColors[skill].bg}`"></div>
-                            <span class="capitalize truncate" :title="skill">{{ legendOpen ? skill : '' }}</span>
-                        </div>
-                    </span>
-                </div>
-            </section>
-        </template>
+                        <ProiconsArrowRight :class="`w-5 h-5 shrink-0 hover:h-6 hover:w-6 ${legendOpen ? 'rotate-[135deg]' : '-rotate-45'}`" />
+                    </button>
+                    <div v-for="(skill, index) in skillSet" :key="index" :class="`flex items-center gap-2`">
+                        <div class="h-3 w-3 rounded-full" :style="`background-color: ${skillColors[skill].bg}`"></div>
+                        <span class="capitalize truncate" :title="skill">{{ legendOpen ? skill : '' }}</span>
+                    </div>
+                </span>
+            </div>
+        </section>
     </LayoutBase>
 </template>
